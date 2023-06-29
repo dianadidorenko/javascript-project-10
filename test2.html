@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Orbitron:regular,500,600,700,800,900"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: rgb(194, 57, 126);
+        position: relative;
+        height: 100vh;
+        width: 100vw;
+        color: white;
+        font-family: "Orbitron", sans-serif;
+      }
+      h2 {
+        font-size: 30px;
+      }
+      .registration,
+      .user-info {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        width: 300px;
+        flex-direction: column;
+        row-gap: 20px;
+        background-color: hotpink;
+        padding: 35px 50px;
+        border-radius: 30px;
+        box-shadow: 0px 0px 30px 10px white;
+        /* display: none; */
+      }
+      /* Info Block */
+      .user-info {
+        display: none;
+        /* display: flex; */
+        width: 400px;
+      }
+      .input-user-group {
+        display: flex;
+        justify-content: space-between;
+        column-gap: 30px;
+      }
+      .input-group-left-part,
+      .input-group-right-part {
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+      }
+      .email-block {
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgb(82, 82, 82);
+      }
+      .email-block p {
+        text-align: right;
+      }
+      #closeUserInfo {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      /* Info Block */
+      .registration label {
+        font-size: 18px;
+      }
+      .registration input,
+      .user-info input {
+        border-radius: 50px;
+        outline: none;
+        padding: 3px 10px;
+        background-color: rgb(254, 181, 217);
+        border: 1px solid white;
+        box-shadow: 0px 0px 2px 1px white;
+        transition: all 0.3s ease 0s;
+      }
+      .registration input:hover,
+      .user-info input:hover {
+        border-color: rgb(228, 24, 201);
+      }
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        row-gap: 5px;
+        position: relative;
+      }
+      .error {
+        position: absolute;
+        top: -3px;
+        right: 0;
+        padding: 3px 10px;
+        color: rgb(4, 255, 34);
+        border: 2px solid rgb(0, 255, 30);
+        font-size: 12px;
+        border-radius: 20px;
+        box-shadow: 0px 0px 3px 1px rgb(0, 255, 30);
+        display: none;
+      }
+      .error-user-info {
+        list-style: none;
+        padding: 3px 10px;
+        color: rgb(4, 255, 34);
+        border: 2px solid rgb(0, 255, 30);
+        font-size: 12px;
+        border-radius: 20px;
+        box-shadow: 0px 0px 3px 1px rgb(0, 255, 30);
+        margin-top: 5px;
+        text-align: center;
+        display: none;
+      }
+      #wrongQuntityBeforeDog {
+        max-width: 200px;
+      }
+      .error-pass {
+        position: absolute;
+        top: 20px;
+        right: -290px;
+        padding: 5px 10px;
+        color: rgb(4, 255, 34);
+        border: 2px solid rgb(0, 255, 30);
+        font-size: 12px;
+        border-radius: 20px;
+        max-width: 200px;
+        text-align: justify;
+        box-shadow: 0px 0px 3px 2px rgb(0, 255, 30);
+        display: none;
+        list-style: none;
+      }
+      .error-mail {
+        list-style: none;
+        position: absolute;
+        top: 10px;
+        right: -290px;
+      }
+      .pass-group,
+      .email-group {
+        position: relative;
+      }
+      .pass-group #arrowIconPass {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        right: -43px;
+        top: 48%;
+        transform: translate(-50%, -50%);
+        transform: rotate(90deg);
+        display: none;
+      }
+      .email-group #arrowIconPassEmail {
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        right: -43px;
+        top: 48%;
+        transform: translate(-50%, -50%);
+        transform: rotate(90deg);
+        display: none;
+      }
+      #signUp,
+      #save {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+        padding: 5px 0;
+        color: rgb(228, 24, 201);
+        font: bold 15px "Orbitron", sans-serif;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease 0s;
+        text-align: center;
+      }
+      #signUp:hover {
+        border-color: rgb(228, 24, 201);
+      }
+    </style>
+    <title>Home</title>
+  </head>
+  <body onload="checkReg()">
+    <form class="registration" id="registration" onsubmit="return false">
+      <h2>Registration</h2>
+      <div class="input-group email-group">
+        <label>Email:</label>
+        <input type="email" name="email" id="email" required />
+        <ul id="errorEmail" class="error error-mail">
+          <li id="wrongMail">Wrong email address.</li>
+          <li id="wrongQuntityBeforeDog">
+            Symbols before @ must be at least 3 characters long.
+          </li>
+        </ul>
+        <img
+          src="arrow-left-icon.svg"
+          id="arrowIconPassEmail"
+          alt="Arrow Left Icon"
+        />
+      </div>
+      <div class="input-group pass-group">
+        <label>Password:</label>
+        <input type="password" name="password" id="password" required />
+        <ul id="errorPass" class="error-pass">
+          <li id="passLong">
+            The password must be at least 6 characters long.
+          </li>
+          <li>Must be present:</li>
+          <li id="lowercase">1 lowercase letter.</li>
+          <li id="uppercase">1 uppercase letter.</li>
+          <li id="number">1 number.</li>
+        </ul>
+        <img
+          src="arrow-left-icon.svg"
+          id="arrowIconPass"
+          alt="Arrow Left Icon"
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Repeat:</label>
+        <input
+          type="password"
+          name="password-repeat"
+          id="passwordRepeat"
+          required
+        />
+        <div id="errorPassRepeat" class="error">
+          <p>Passwords must match</p>
+        </div>
+      </div>
+      <input id="signUp" type="submit" value="Sing Up" />
+    </form>
+
+    <!-- ============================== -->
+
+    <form class="user-info" id="userInfo" onsubmit="return false">
+      <div class="email-block">
+        <p>
+          Hello, <span id="userEmail"></span
+          ><span id="closeUserInfo"> exit</span>
+        </p>
+      </div>
+      <h2>User info</h2>
+      <div class="input-user-group">
+        <div class="input-group-left-part">
+          <label>First name:</label>
+          <input type="text" name="firstName" id="firstName" required />
+          <ul id="errorFirstName" class="error-user-info">
+            <li id="wrongFirstName">Only letters are permitted.</li>
+          </ul>
+        </div>
+        <div class="input-group-right-part">
+          <label>Last name:</label>
+          <input type="text" name="lasttName" id="lastName" required />
+          <ul id="errorLastName" class="error-user-info">
+            <li id="wrongLasttName">Only letters are permitted.</li>
+          </ul>
+        </div>
+      </div>
+      <input id="save" type="sumbit" value="Save" />
+    </form>
+
+    <script type="text/javascript">
+      //   1Ev1Ev
+      function checkReg() {
+        let userEmail = document.getElementById("userEmail"),
+          s = document.cookie.split("; "),
+          cookieObject = {};
+
+        for (var i = 0; i < s.length; i++) {
+          let cookieElements = s[i].split("=");
+          cookieObject[cookieElements[0]] = cookieElements[1];
+        }
+        if ("email" in cookieObject) {
+          var regForm = document.getElementById("registration");
+          userEmail.innerHTML = cookieObject["email"];
+        }
+        if ("firstName" in cookieObject) {
+          var userInfo = document.getElementById("userInfo");
+          firstName.value = cookieObject["firstName"];
+        }
+        if ("lastName" in cookieObject) {
+          var userInfo = document.getElementById("userInfo");
+          lastName.value = cookieObject["lastName"];
+        }
+
+        if (cookieObject["email"].length > 0) {
+          regForm.style.display = "none";
+          userInfo.style.display = "flex";
+        } else if (cookieObject["firstName"].length > 0) {
+          regForm.style.display = "none";
+          userInfo.style.display = "flex";
+        } else if (cookieObject["lastName"].length > 0) {
+          regForm.style.display = "none";
+          userInfo.style.display = "flex";
+        } else {
+          regForm.style.display = "flex";
+        }
+      }
+
+      signUp.addEventListener("click", (e) => {
+        let email = document.getElementById("email"),
+          password = document.getElementById("password"),
+          passwordRepeat = document.getElementById("passwordRepeat");
+
+        errorEmail.style.display = "none";
+        errorPass.style.display = "none";
+        errorPassRepeat.style.display = "none";
+        arrowIconPassEmail.style.display = "none";
+        arrowIconPass.style.display = "none";
+
+        email.style.border = "1px solid white";
+        password.style.border = "1px solid white";
+        passwordRepeat.style.border = "1px solid white";
+
+        passLong.style.color = "rgb(4, 255, 34)";
+        lowercase.style.color = "rgb(4, 255, 34)";
+        uppercase.style.color = "rgb(4, 255, 34)";
+        number.style.color = "rgb(4, 255, 34)";
+
+        // Check Email
+        patternMail = /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{3}$/i;
+
+        // Check Password
+        patternLetterLowerCase = /^(?=.*[a-z]).+$/;
+        patternLetterUpperCase = /^(?=.*[A-Z]).+$/;
+        patternNumber = /^(?=.*[0-9_\W]).+$/;
+
+        // Check Email
+        str = email.value;
+        var from = str.search("@");
+        newstr = str.substring(0, from);
+
+        if (newstr.length < 3) {
+          errorEmail.style.display = "block";
+          arrowIconPassEmail.style.display = "block";
+          email.style.border = "2px solid red";
+          wrongQuntityBeforeDog.style.color = "red";
+          return false;
+        } else if (!patternMail.test(email.value)) {
+          errorEmail.style.display = "block";
+          arrowIconPassEmail.style.display = "block";
+          email.style.border = "2px solid red";
+          wrongMail.style.color = "red";
+          return false;
+        }
+        // Check Password
+        if (password.value.length < 6) {
+          errorPass.style.display = "block";
+          arrowIconPass.style.display = "block";
+          password.style.border = "3px solid red";
+          passLong.style.color = "red";
+          return false;
+        } else if (!patternLetterLowerCase.test(password.value)) {
+          errorPass.style.display = "block";
+          arrowIconPass.style.display = "block";
+          password.style.border = "3px solid red";
+          lowercase.style.color = "red";
+          return false;
+        } else if (!patternLetterUpperCase.test(password.value)) {
+          errorPass.style.display = "block";
+          arrowIconPass.style.display = "block";
+          password.style.border = "3px solid red";
+          uppercase.style.color = "red";
+          return false;
+        } else if (!patternNumber.test(password.value)) {
+          errorPass.style.display = "block";
+          arrowIconPass.style.display = "block";
+          password.style.border = "3px solid red";
+          number.style.color = "red";
+          return false;
+        }
+        // Check Repeat Password
+        if (password.value != passwordRepeat.value) {
+          errorPassRepeat.style.display = "block";
+          passwordRepeat.style.border = "3px solid red";
+          return false;
+        } else if (passwordRepeat.value.length < 6) {
+          errorPassRepeat.style.display = "block";
+          passwordRepeat.style.border = "3px solid red";
+          return false;
+        } else {
+          //Create Cookie
+          var inputEmail = document.getElementById("email").value;
+          let expDate = new Date();
+          expDate.setTime(new Date().getTime() + 30000);
+          document.cookie =
+            "email=" +
+            inputEmail +
+            "; expires=" +
+            expDate.toGMTString() +
+            ";path=/";
+          //Create Cookie
+          regForm = document.getElementById("registration");
+          regForm.style.display = "none";
+          userInfo.style.display = "flex";
+          email.value = "";
+          password.value = "";
+          passwordRepeat.value = "";
+          checkReg();
+          return;
+        }
+      });
+      //    =================================================================
+      save.addEventListener("click", (e) => {
+        let firstName = document.getElementById("firstName");
+        errorFirstName.style.display = "none";
+        firstName.style.border = "1px solid white";
+        // Check Name
+        patternName = /^[а-яА-Яa-zA-Z]+$/;
+        if (!patternName.test(firstName.value)) {
+          !patternName.test(firstName.value);
+          errorFirstName.style.display = "block";
+          firstName.style.border = "3px solid red";
+          return false;
+        } else {
+          regForm = document.getElementById("registration");
+          regForm.style.display = "flex";
+          userInfo.style.display = "none";
+          //   firstName.value = "";
+
+          //Create Cookie
+          let inputfirstName = document.getElementById("firstName").value,
+            inputlastName = document.getElementById("lastName").value,
+            expDate = new Date();
+          expDate.setTime(new Date().getTime() + 60 * 60000);
+          document.cookie =
+            "firstName=" +
+            inputfirstName +
+            "; expires=" +
+            expDate.toGMTString() +
+            ";path=/";
+          document.cookie =
+            "lastName=" +
+            inputlastName +
+            "; expires=" +
+            expDate.toGMTString() +
+            ";path=/";
+          //Create Cookie
+          regForm = document.getElementById("registration");
+          regForm.style.display = "none";
+          userInfo.style.display = "flex";
+          checkReg();
+          return;
+        }
+      });
+
+      closeUserInfo.addEventListener("click", (e) => {
+        var regForm = document.getElementById("registration");
+        document.cookie = "email=;expires=-1;path=/";
+        document.cookie = "firstName=;expires=-1;path=/";
+        document.cookie = "lastName=;expires=-1;path=/";
+        userInfo.style.display = "none";
+        regForm.style.display = "flex";
+      });
+      //   1Ev1Ev
+    </script>
+  </body>
+</html>
